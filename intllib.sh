@@ -1,3 +1,3 @@
 #!/bin/bash
 
-../intllib/tools/xgettext.sh ./offeringbowl.lua ./player.lua
+../intllib/tools/xgettext.sh ./offeringbowl.lua ./player.lua ./settings.lua

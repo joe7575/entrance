@@ -129,6 +129,17 @@ local function control_player(pos1, pos2, player_name)
 	end
 end	
 
+local function formspec_help(offs)
+	return "size[13,8]"..
+		default.gui_bg..
+		default.gui_bg_img..
+		default.gui_slots..
+		"field[0,0;0,0;_type_;;help]"..
+		"label[0,"..(-offs/50)..";"..entrance.ExamHelp.."]"..
+		--"label[0.2,0;test]"..
+		"scrollbar[11.5,1;0.5,7;vertical;sb_help;"..offs.."]"
+end
+
 local function start_test(player_name)
 	local item = book_field(player_name)
 	if item then
@@ -136,10 +147,20 @@ local function start_test(player_name)
 		fill_player_inventory(player_name, entrance.ExamStartItems)
 		place_player(item.start, player_name)
 		minetest.after(1, control_player, item.pos1, item.pos2, player_name)
+		minetest.show_formspec(player_name, "entrance:exam_help", formspec_help(1))
 		return true
 	end
 	return false
 end
+
+minetest.register_on_player_receive_fields(function(player, formname, fields)
+	local evt = minetest.explode_scrollbar_event(fields.sb_help)
+	if evt.type == "CHG" then
+		minetest.show_formspec(player:get_player_name(), 
+				"entrance:exam_help", 
+				formspec_help(evt.value))
+	end
+end)
 
 local function cancel_test(player_name)
 	local item = free_field(player_name)
@@ -148,7 +169,7 @@ local function cancel_test(player_name)
 		minetest.set_player_privs(player_name, {})
 		clear_player_inventory(player_name)
 		return_player(player_name)
---		minetest.delete_area(item.pos1, item.pos2)
+		minetest.delete_area(item.pos1, item.pos2)
 		return true
 	end
 	return false
@@ -173,6 +194,7 @@ function entrance.test_finished(player_name)
 		minetest.log("action", player_name.." passed the entrance exam")
 	end
 end
+
 
 minetest.register_privilege("entrant", 
 	{description = S("Player who is currently in the entrance exam"), 
@@ -212,6 +234,15 @@ minetest.register_chatcommand("cancel_exam", {
 		return false, S("You don't have server privs")
 	end,
 })
+
+minetest.register_chatcommand("exam_help", {
+	description = S("Output help to the exam"),
+	func = function(name)
+		minetest.show_formspec(name, "entrance:exam_help", formspec_help(1))
+		return true, ""
+	end,
+})
+
 
 -- switch back to no player privs
 minetest.register_on_leaveplayer(function(player, timed_out)
