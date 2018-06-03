@@ -1,0 +1,80 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2018-06-03 20:51+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: offeringbowl.lua
+msgid "Offering Bowl"
+msgstr ""
+
+#: player.lua
+msgid ""
+"Congratulations!!\n"
+"\n"
+"You successfully finished\n"
+"the entrance exam.\n"
+"\n"
+"Achieve your dreams but stick to the rules"
+msgstr ""
+
+#: player.lua
+msgid "You successfully finished the entrance exam"
+msgstr ""
+
+#: player.lua
+msgid " successfully finished the entrance exam"
+msgstr ""
+
+#: player.lua
+msgid "Player who is currently in the entrance exam"
+msgstr ""
+
+#: player.lua
+msgid "Start the entrance exam to get interact privs"
+msgstr ""
+
+#: player.lua
+msgid "Let's start the exam"
+msgstr ""
+
+#: player.lua
+msgid "All exam fields are full!"
+msgstr ""
+
+#: player.lua
+msgid "You already have interact privs"
+msgstr ""
+
+#: player.lua
+msgid "Cancel the entrance exam for the given player"
+msgstr ""
+
+#: player.lua
+msgid "Your exam was canceled"
+msgstr ""
+
+#: player.lua
+msgid "Exam canceled"
+msgstr ""
+
+#: player.lua
+msgid "Player not in entrance exam"
+msgstr ""
+
+#: player.lua
+msgid "You don't have server privs"
+msgstr ""
