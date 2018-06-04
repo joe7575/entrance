@@ -17,7 +17,7 @@ He wil be teleported to the starting position and the exam scope is deleted for 
 
 
 ## Dependencies
-default  
+default, wool  
 Optional: intllib
 
 # License
