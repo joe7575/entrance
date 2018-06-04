@@ -81,6 +81,38 @@ local function free_field(player_name)
 	return nil
 end
 
+local function field_index(player_name)
+	for idx,item in ipairs(ExamFields) do
+		if item.name == player_name then
+			return idx
+		end
+	end
+	return nil
+end
+
+local function delete_fields()
+	for _,item in ipairs(ExamFields) do
+		minetest.delete_area(item.pos1, item.pos2)
+	end
+end
+
+local function place_marker(pos)
+	minetest.set_node(pos, {name="wool:yellow"})
+	pos.y = pos.y + 1
+	minetest.set_node(pos, {name="wool:yellow"})
+	pos.y = pos.y + 1
+	minetest.set_node(pos, {name="wool:yellow"})
+	pos.y = pos.y + 1
+	minetest.set_node(pos, {name="wool:yellow"})
+end
+
+local function place_markers(start, pos1, pos2)
+	place_marker({x=pos1.x, y=start.y, z=pos1.z})
+	place_marker({x=pos2.x, y=start.y, z=pos2.z})
+	place_marker({x=pos2.x, y=start.y, z=pos1.z})
+	place_marker({x=pos1.x, y=start.y, z=pos2.z})
+end
+
 local function clear_player_inventory(player_name)
 	local inv = minetest.get_inventory({type="player", name=player_name})
 	local list = inv:get_list("main")
@@ -135,9 +167,10 @@ local function formspec_help(offs)
 		default.gui_bg_img..
 		default.gui_slots..
 		"field[0,0;0,0;_type_;;help]"..
-		"label[0,"..(-offs/50)..";"..entrance.ExamHelp.."]"..
+		"image[7.5,0;5,3;entrance_altar.png]"..
+		"label[0,"..(3-offs/50)..";"..entrance.ExamHelp.."]"..
 		--"label[0.2,0;test]"..
-		"scrollbar[11.5,1;0.5,7;vertical;sb_help;"..offs.."]"
+		"scrollbar[12,0;0.5,8;vertical;sb_help;"..offs.."]"
 end
 
 local function start_test(player_name)
@@ -146,6 +179,7 @@ local function start_test(player_name)
 		set_player_privs(player_name, entrance.PlayerExamPrivs)
 		fill_player_inventory(player_name, entrance.ExamStartItems)
 		place_player(item.start, player_name)
+		place_markers(item.start, item.pos1, item.pos2)
 		minetest.after(1, control_player, item.pos1, item.pos2, player_name)
 		minetest.show_formspec(player_name, "entrance:exam_help", formspec_help(1))
 		return true
@@ -235,6 +269,17 @@ minetest.register_chatcommand("cancel_exam", {
 	end,
 })
 
+minetest.register_chatcommand("del_exam_fields", {
+	description = S("Delete all exam fields"),
+	func = function(name, params)
+		if minetest.check_player_privs(name, "server") then
+			delete_fields()
+			return true, S("Exam fields deleted")
+		end
+		return false, S("You don't have server privs")
+	end,
+})
+
 minetest.register_chatcommand("exam_help", {
 	description = S("Output help to the exam"),
 	func = function(name)
@@ -244,23 +289,54 @@ minetest.register_chatcommand("exam_help", {
 })
 
 
--- switch back to no player privs
+-- reserve field for 4 ticks
 minetest.register_on_leaveplayer(function(player, timed_out)
 	local player_name = player:get_player_name()
 	if minetest.check_player_privs(player_name, "entrant") then
-		cancel_test(player_name)
-		minetest.log("action", player_name.." canceled the entrance exam")
+		local idx = field_index(player_name)
+		if idx then
+			ExamFields[idx].timeout = 4
+			minetest.log("action", "Entrant "..player_name.." left the game")
+		end
 	end
 end)
 
-local function player_info()
+-- cancel exam when the timeout is up 
+minetest.register_on_joinplayer(function(player)
+	local player_name = player:get_player_name()
+	if minetest.check_player_privs(player_name, "entrant") then
+		local idx = field_index(player_name)
+		if idx == nil then
+			minetest.set_player_privs(player_name, {})
+			clear_player_inventory(player_name)
+			return_player(player_name)
+		end
+	else
+		minetest.log("action", "Entrant "..player_name.." joined the game")
+	end
+end)
+
+local function maintenance()
+	-- output welcome text
 	for _,player in ipairs(minetest.get_connected_players()) do
 		local name = player:get_player_name()
 		if not minetest.check_player_privs(name, "interact") then
 			minetest.chat_send_player(name, entrance.WelcomeInfo)
 		end
 	end
-	minetest.after(5*60, player_info)
+	-- free up booked but deserted exam fields
+	for idx,item in ipairs(ExamFields) do
+		if item.timeout then
+			item.timeout = item.timeout - 1
+			if item.timeout <= 0 then
+				minetest.log("action", "Entrant "..item.name.." gave up (timeout)")
+				item.timeout = nil
+				item.name = ""
+				minetest.delete_area(item.pos1, item.pos2)
+			end
+		end
+	end
+	minetest.after(5*60, maintenance)
 end
 
-minetest.after(30, player_info)
+minetest.after(30, maintenance)

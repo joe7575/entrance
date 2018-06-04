@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-06-03 23:34+0200\n"
+"POT-Creation-Date: 2018-06-04 20:46+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -77,6 +77,14 @@ msgstr ""
 
 #: player.lua
 msgid "You don't have server privs"
+msgstr ""
+
+#: player.lua
+msgid "Delete all exam fields"
+msgstr ""
+
+#: player.lua
+msgid "Exam fields deleted"
 msgstr ""
 
 #: player.lua

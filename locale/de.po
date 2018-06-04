@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-06-03 23:26+0200\n"
-"PO-Revision-Date: 2018-06-03 23:28+0200\n"
+"POT-Creation-Date: 2018-06-04 20:46+0200\n"
+"PO-Revision-Date: 2018-06-04 20:48+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: de\n"
@@ -85,6 +85,14 @@ msgstr "Spieler ist nicht in der Aufnahmeprüfung"
 #: player.lua
 msgid "You don't have server privs"
 msgstr "Du hast keine server Rechte"
+
+#: player.lua
+msgid "Delete all exam fields"
+msgstr "Lösche die Prüfungsfelder"
+
+#: player.lua
+msgid "Exam fields deleted"
+msgstr "Prüfungsfelder gelöscht"
 
 #: player.lua
 msgid "Output help to the exam"
