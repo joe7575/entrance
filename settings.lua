@@ -54,8 +54,7 @@ entrance.PlayerStandardPrivs = {"interact", "shout", "spawn", "home", "settime"}
 
 
 -- message will be shown to new players cyclically
-entrance.WelcomeInfo = S([[
-Welcome here on the Server!
+entrance.WelcomeInfo = S([[Welcome here on the Server!
 You don't have any privs/rights to build or craft anything. 
 Before you get the privs, you have to make the entrance exam. 
 This exam is not difficult but needs about 45 min. or more time depending on your skills.
@@ -63,8 +62,7 @@ Start the exam with the command '/start_exam'
 ]])
 
 
-entrance.ExamHelp = S([[
-Your task: 
+entrance.ExamHelp = S([[Your task: 
 Build an altar and sacrifice bread 
 and a sword for the gods.
 
