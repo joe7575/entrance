@@ -17,9 +17,9 @@ local S, NS = dofile(MP.."/intllib.lua")
 local ExamFields = {}
 for _,pos in ipairs(entrance.ExamPositions) do
 	-- vector alignment to the block center
-	local xpos = (math.floor((pos.x + 15) / 16) * 16) + 8
-	local ypos = (math.floor((pos.y + 15) / 16) * 16) + 8
-	local zpos = (math.floor((pos.z + 15) / 16) * 16) + 8
+	local xpos = (math.floor(pos.x / 16) * 16) + 8
+	local ypos = (math.floor(pos.y / 16) * 16) + 8
+	local zpos = (math.floor(pos.z / 16) * 16) + 8
 	ExamFields[#ExamFields + 1] = {
 		start = pos,
 		pos1 = {x=xpos-24, y=ypos-40, z=zpos-24},
@@ -97,6 +97,10 @@ local function delete_fields()
 end
 
 local function place_marker(pos)
+	minetest.set_node(pos, {name="wool:yellow"})
+	pos.y = pos.y + 1
+	minetest.set_node(pos, {name="wool:yellow"})
+	pos.y = pos.y + 1
 	minetest.set_node(pos, {name="wool:yellow"})
 	pos.y = pos.y + 1
 	minetest.set_node(pos, {name="wool:yellow"})
@@ -275,6 +279,19 @@ minetest.register_chatcommand("del_exam_fields", {
 		if minetest.check_player_privs(name, "server") then
 			delete_fields()
 			return true, S("Exam fields deleted")
+		end
+		return false, S("You don't have server privs")
+	end,
+})
+
+minetest.register_chatcommand("place_exam_markers", {
+	description = S("Place all exam markers"),
+	func = function(name, params)
+		if minetest.check_player_privs(name, "server") then
+			for _,item in ipairs(ExamFields) do
+				place_markers(item.start, item.pos1, item.pos2)
+			end
+			return true, S("Exam markers placed")
 		end
 		return false, S("You don't have server privs")
 	end,
