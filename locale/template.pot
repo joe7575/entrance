@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-06-04 21:09+0200\n"
+"POT-Creation-Date: 2018-06-05 23:45+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -80,11 +80,11 @@ msgid "You don't have server privs"
 msgstr ""
 
 #: player.lua
-msgid "Delete all exam fields"
+msgid "Place all exam markers"
 msgstr ""
 
 #: player.lua
-msgid "Exam fields deleted"
+msgid "Exam markers placed"
 msgstr ""
 
 #: player.lua
@@ -99,6 +99,7 @@ msgid ""
 "This exam is not difficult but needs about 45 min. or more time depending on "
 "your skills.\n"
 "Start the exam with the command '/start_exam'\n"
+"More info about the exam with '/exam_help'\n"
 msgstr ""
 
 #: settings.lua

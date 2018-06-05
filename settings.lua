@@ -27,7 +27,7 @@ entrance.ExamPositions = {
 entrance.ExamStartItems = {
 	"default:tree 5", 
 	"farming:seed_wheat 12", 
-	"default:torch 4", 
+	"default:torch 8", 
 	"default:water_source",
 }
 
@@ -50,7 +50,7 @@ entrance.ExamFinishedItems = {
 entrance.PlayerExamPrivs = {"interact", "shout", "entrant"}
 
 -- player privs after he has finished the exam
-entrance.PlayerStandardPrivs = {"interact", "shout", "spawn", "home", "settime"}
+entrance.PlayerStandardPrivs = {"interact", "shout", "home"}
 
 
 -- message will be shown to new players cyclically
@@ -59,6 +59,7 @@ You don't have any privs/rights to build or craft anything.
 Before you get the privs, you have to make the entrance exam. 
 This exam is not difficult but needs about 45 min. or more time depending on your skills.
 Start the exam with the command '/start_exam'
+More info about the exam with '/exam_help'
 ]])
 
 

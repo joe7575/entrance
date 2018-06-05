@@ -15,6 +15,7 @@ local MP = minetest.get_modpath("entrance")
 local S, NS = dofile(MP.."/intllib.lua")
 
 local ExamFields = {}
+-- calculate the field areas in blocks
 for _,pos in ipairs(entrance.ExamPositions) do
 	-- vector alignment to the block center
 	local xpos = (math.floor(pos.x / 16) * 16) + 8
@@ -22,7 +23,7 @@ for _,pos in ipairs(entrance.ExamPositions) do
 	local zpos = (math.floor(pos.z / 16) * 16) + 8
 	ExamFields[#ExamFields + 1] = {
 		start = pos,
-		pos1 = {x=xpos-24, y=ypos-40, z=zpos-24},
+		pos1 = {x=xpos-24, y=ypos-72, z=zpos-24},
 		pos2 = {x=xpos+23, y=ypos+23, z=zpos+23},
 		name = "",
 	}
@@ -88,12 +89,6 @@ local function field_index(player_name)
 		end
 	end
 	return nil
-end
-
-local function delete_fields()
-	for _,item in ipairs(ExamFields) do
-		minetest.delete_area(item.pos1, item.pos2)
-	end
 end
 
 local function place_marker(pos)
@@ -183,7 +178,8 @@ local function start_test(player_name)
 		set_player_privs(player_name, entrance.PlayerExamPrivs)
 		fill_player_inventory(player_name, entrance.ExamStartItems)
 		place_player(item.start, player_name)
-		place_markers(item.start, item.pos1, item.pos2)
+		minetest.delete_area(item.pos1, item.pos2)
+		minetest.after(5, place_markers, item.start, item.pos1, item.pos2)
 		minetest.after(1, control_player, item.pos1, item.pos2, player_name)
 		minetest.show_formspec(player_name, "entrance:exam_help", formspec_help(1))
 		return true
@@ -207,7 +203,6 @@ local function cancel_test(player_name)
 		minetest.set_player_privs(player_name, {})
 		clear_player_inventory(player_name)
 		return_player(player_name)
-		minetest.delete_area(item.pos1, item.pos2)
 		return true
 	end
 	return false
@@ -273,17 +268,6 @@ minetest.register_chatcommand("cancel_exam", {
 	end,
 })
 
-minetest.register_chatcommand("del_exam_fields", {
-	description = S("Delete all exam fields"),
-	func = function(name, params)
-		if minetest.check_player_privs(name, "server") then
-			delete_fields()
-			return true, S("Exam fields deleted")
-		end
-		return false, S("You don't have server privs")
-	end,
-})
-
 minetest.register_chatcommand("place_exam_markers", {
 	description = S("Place all exam markers"),
 	func = function(name, params)
@@ -331,6 +315,9 @@ minetest.register_on_joinplayer(function(player)
 	else
 		minetest.log("action", "Entrant "..player_name.." joined the game")
 	end
+	if not minetest.check_player_privs(player_name, "interact") then
+		minetest.chat_send_player(player_name, entrance.WelcomeInfo)
+	end
 end)
 
 local function maintenance()
@@ -349,7 +336,6 @@ local function maintenance()
 				minetest.log("action", "Entrant "..item.name.." gave up (timeout)")
 				item.timeout = nil
 				item.name = ""
-				minetest.delete_area(item.pos1, item.pos2)
 			end
 		end
 	end
