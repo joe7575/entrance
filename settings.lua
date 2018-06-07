@@ -82,6 +82,7 @@ In detail:
   of a Stone Pickaxe.
 - Collect Cobblestone, Iron Lump, Coal Lump
   and so on.
+- If you can't find iron, go deeper.
 - Craft a Furnace and smelt the Iron Lumps
   to Steel Ingots.
 - Craft the Offering Bowl.
