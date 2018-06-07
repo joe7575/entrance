@@ -17,7 +17,7 @@ local MP = minetest.get_modpath("entrance")
 local S, NS = dofile(MP.."/intllib.lua")
 
 
--- list of positions of "green areas" for the exams
+-- list of positions of "green areas" for the exams (2..4 should be sufficient)
 entrance.ExamPositions = {
     {x=-112, y=11, z=633},
     {x=-225, y=10, z=811},
@@ -31,13 +31,13 @@ entrance.ExamStartItems = {
 	"default:water_source",
 }
 
--- what has to be in the offering bowl to finish the exam
+-- what has to be in the offering bowl to pass the exam
 entrance.RequiredItems = {
 	"default:sword_steel",
 	"farming:bread 2", 
 }
 
--- what the player gets after he finished the exam
+-- what the player gets after he passed the exam
 entrance.ExamFinishedItems = {
 	"default:torch 20", 
 	"default:tree 20", 
@@ -63,6 +63,7 @@ More info about the exam with '/exam_help'
 ]])
 
 
+-- examination mission
 entrance.ExamHelp = S([[Your task: 
 Build an altar and sacrifice bread 
 and a sword for the gods.
