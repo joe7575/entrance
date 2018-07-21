@@ -293,7 +293,8 @@ minetest.register_chatcommand("exam_help", {
 -- reserve field for 4 ticks
 minetest.register_on_leaveplayer(function(player, timed_out)
 	local player_name = player:get_player_name()
-	if minetest.check_player_privs(player_name, "entrant") then
+	if not minetest.check_player_privs(player_name, "server") and
+			minetest.check_player_privs(player_name, "entrant") then
 		local idx = field_index(player_name)
 		if idx then
 			ExamFields[idx].timeout = 4
@@ -305,7 +306,8 @@ end)
 -- cancel exam when the timeout is up 
 minetest.register_on_joinplayer(function(player)
 	local player_name = player:get_player_name()
-	if minetest.check_player_privs(player_name, "entrant") then
+	if not minetest.check_player_privs(player_name, "server") and
+			minetest.check_player_privs(player_name, "entrant") then
 		local idx = field_index(player_name)
 		if idx == nil then
 			minetest.set_player_privs(player_name, {})
