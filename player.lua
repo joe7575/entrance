@@ -322,6 +322,17 @@ minetest.register_on_joinplayer(function(player)
 	end
 end)
 
+-- cancel exam
+minetest.register_on_dieplayer(function(player)
+	local player_name = player:get_player_name()
+	if not minetest.check_player_privs(player_name, "server") and
+			minetest.check_player_privs(player_name, "entrant") then
+		minetest.set_player_privs(player_name, {})
+		clear_player_inventory(player_name)
+	end
+end)
+
+
 local function maintenance()
 	-- output welcome text
 	for _,player in ipairs(minetest.get_connected_players()) do
